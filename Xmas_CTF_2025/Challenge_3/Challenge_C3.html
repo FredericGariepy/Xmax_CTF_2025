@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EncodedDecode Test</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            padding: 50px;
+            overflow: hidden; /* prevents scrollbars from snow */
+        }
+
+        /* Snowflake style */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        /* Snow animation */
+        @keyframes fall {
+            0% { transform: translateY(0) translateX(0); opacity: 1; }
+            100% { transform: translateY(100vh) translateX(30px); opacity: 0; }
+        }
+		
+		a {
+				color: white;       /* make link text white */
+				text-decoration: none; /* remove underline */
+			}
+
+			a:hover {
+				color: white;       /* keeps it white on hover */
+				text-decoration: none; /* no underline on hover */
+			}
+		.button {
+			display: inline-block;       /* makes it behave like a button */
+			padding: 15px 30px;          /* space inside the button */
+			background-color: #007BFF;   /* blue button background */
+			color: white;                /* text color */
+			font-size: 1.5em;            /* bigger text */
+			font-weight: bold;
+			text-decoration: none;       /* remove underline */
+			border-radius: 8px;          /* rounded corners */
+			border: none;
+			cursor: pointer;
+			transition: background 0.3s, transform 0.2s;
+		}
+
+		.button:hover {
+			background-color: #0056b3;   /* darker on hover */
+			transform: scale(1.05);      /* slight pop effect */
+		}
+    </style>
+</head>
+<body>
+    <script>
+        // Create simple snowflakes
+        const snowflakeCount = 30; // adjust for more/less snow
+        for (let i = 0; i < snowflakeCount; i++) {
+            const snow = document.createElement('div');
+            snow.classList.add('snowflake');
+            snow.textContent = '❄'; // snowflake symbol
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.animationDuration = (5 + Math.random() * 5) + 's'; // 5-10s
+            snow.style.fontSize = (10 + Math.random() * 20) + 'px';
+            document.body.appendChild(snow);
+        }
+    </script>
+  
+  <a href="demo.html" class="button"><h1>Go to the Demo</h1></a>
+
+  
+  
+    <!-- Link your JS file -->
+    <script src="./EncodeAndDecode.js"></script>
+	
+    <script>
+	
+	console.log(`https://www.bleepingcomputer.com/news/security/phishing-attack-hides-javascript-using-invisible-unicode-trick/`)
+	const Tree =`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⡰⡇⠁⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠰⢾⠇⠨⡦⠀⠂⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡀⠀⢈⣹⠜⠻⢾⠃⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠁⢠⣿⡵⠾⣻⣶⠿⠦⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⠀⢀⣠⣮⣦⡶⠻⠛⢶⣄⡀⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣽⠏⠁⣠⣂⣦⣈⣝⣦⣄⠀⠈⠁⠀
+⠀⠀⠀⠀⠁⣠⣾⣵⣾⣾⠟⡙⠟⠿⣍⡉⠀⠀⠆⠀⠀
+⠀⠰⠀⠀⠄⣠⣶⣾⣭⡶⠟⠻⣶⡰⣜⣳⣦⣄⠀⡀⠀
+⠀⠀⠀⢀⣠⣴⣿⣋⡴⣪⠎⣄⡙⠻⠿⣯⣉⠉⠀⠀⠀
+⠀⠂⠀⢀⣉⡭⢿⡛⣛⣵⠎⠀⠙⢾⣶⣦⣭⣷⣦⠐⠀
+⠀⠀⢈⣙⣿⡿⠿⠟⣋⢅⡄⡄⡐⣄⢤⣉⠷⢦⣄⣀⠠
+⠐⠾⠿⢽⣷⡶⠶⡿⣓⣭⣾⣿⢷⣬⣓⢿⠿⠿⣯⣉⣁
+⠀⠀⠀⠉⠉⠉⠛⠛⠉⢀⣿⢿⡀⠙⠋⠓⠿⠿⠏⠉⠉
+⠀⠀⠀⠀⠀⠀⠠⠤⠶⠾⢿⡯⠷⠶⠤⠤
+​‌​​​‌‌​​‌​​‌‌​​​‌​​​​​‌​‌​​​‌‌‌​‌‌‌‌​‌‌​‌​​​‌‌‌​‌‌​‌​​‌​‌‌​​‌‌​​‌‌‌​‌​​​‌​‌‌‌‌‌​‌​‌​‌​‌​‌‌​‌‌‌​​‌‌​​‌​​​‌‌​​‌​‌​‌‌‌​​‌​​‌​‌‌‌‌‌​‌​‌​‌​​​‌‌​‌​​​​‌‌​​‌​‌​‌​‌​‌​​​‌‌‌​​‌​​‌‌​​‌​‌​‌‌​​‌​‌​‌‌‌‌‌​‌`;
+		console.log(Tree);
+
+        // List available variables & functions
+        console.log("%cAvailable Variables & Functions:", "color: cyan; font-weight: bold;");
+		console.log("%cTree", "color: lightgreen; font-weight: bold;");
+        console.log("%c1 extractInvisibleChars(input) → Extract only the invisible characters from any text.", "color: lightgreen;");
+        console.log("%c2 invisibleBinaryToText(invisible) → Decode invisible Unicode back to string.", "color: lightgreen;");
+        console.log("%c3 textToInvisibleBinary(text) → Encode a string into invisible Unicode.", "color: lightgreen;");
+	</script>
+</body>
+</html>

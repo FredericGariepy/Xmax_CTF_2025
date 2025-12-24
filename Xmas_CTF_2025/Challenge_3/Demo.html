@@ -1,0 +1,688 @@
+
+<!doctype html>
+<html lang="en-us">
+<head>
+
+<!--encoder & decoder script, must be used in the page, or at sperate stages depending on the attack-->
+<script src="./EncodeAndDecode.js"></script>
+
+<!--
+`in challenge #3 you have access to the functions that encodes text to zero-width character binary,
+		to correctly copy/paste invisible code:
+		1. const variableName=textToInvisibleBinary("alert('text')")
+		2. console.log({ variableName });   #Notice the ({})
+		3. right-click 'Copy Object', you can then drop in your invisible binary in the hidden_payload`
+-->
+
+<script>
+	const obj ={
+		"hidden_payload": "​‌‌​​​​‌​‌‌​‌‌​​​‌‌​​‌​‌​‌‌‌​​‌​​‌‌‌​‌​​​​‌​‌​​​​​‌​​‌‌‌​‌​​​‌​‌​‌‌‌‌​​​​‌‌​​​​‌​‌‌​‌‌​‌​‌‌‌​​​​​‌‌​‌‌​​​‌‌​​‌​‌​​‌​​​​​​‌‌​‌‌‌‌​‌‌​​‌‌​​​‌​​​​​​‌‌​‌​​‌​‌‌​‌‌‌​​‌‌‌​‌‌​​‌‌​‌​​‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌​​​‌​​‌‌​‌‌​​​‌‌​​‌​‌​​‌​​​​​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌​​‌​​​‌‌​​‌​‌​​‌​​​​​​‌‌‌​‌​​​‌‌‌​​‌​​‌‌​‌​​‌​‌‌​​‌‌‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌‌‌​​‌​​​‌​‌‌‌​​‌​‌‌‌​​​‌‌​‌‌‌​​‌​​​​​‌​‌‌​​‌‌​​‌‌‌​‌​​​‌‌​​‌​‌​‌‌‌​​‌​​​‌​​​​​​‌‌​​​​‌​​‌​​​​​​‌‌‌​​​‌​‌‌‌​‌​‌​‌‌​‌​​‌​‌‌​​​‌‌​‌‌​‌​‌‌​​‌​​​​​​‌‌‌​​‌​​‌‌​​‌​‌​‌‌​​​​‌​‌‌​​‌​​​​‌​‌‌​​​​‌​​​​​​‌‌​​‌‌‌​‌‌​‌‌‌‌​​‌​​​​​​‌‌​​​‌​​‌‌​​​​‌​‌‌​​​‌‌​‌‌​‌​‌‌​​‌​​​​​​‌‌​​​‌‌​‌‌​‌​​​​‌‌​​​​‌​‌‌​‌‌​​​‌‌​‌‌​​​‌‌​​‌​‌​‌‌​‌‌‌​​‌‌​​‌‌‌​‌‌​​‌​‌​​‌​​​​​​​‌‌​​‌‌​​‌​​​​​​‌‌​​​​‌​‌‌​‌‌‌​​‌‌​​‌​​​​‌​​​​​​‌‌​‌‌‌‌​‌‌‌​​​​​‌‌​​‌​‌​‌‌​‌‌‌​​​‌​​​​​​‌‌‌​‌​​​‌‌​‌​​​​‌‌​​‌​‌​​‌​​​​​​‌‌​​‌​​​‌‌​​‌​‌​‌‌‌​‌‌​​‌‌​​‌​‌​‌‌​‌‌​​​‌‌​‌‌‌‌​‌‌‌​​​​​‌‌​​‌​‌​‌‌‌​​‌​​​‌​​​​​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​​​‌‌​​‌​‌​​‌​​‌‌‌​​‌​‌​​‌" // <- this is the payload, add your own encoded invisible binary here
+		//"hidden_payload": "​‌‌‌​‌‌‌​‌‌​‌​​‌​‌‌​‌‌‌​​‌‌​​‌​​​‌‌​‌‌‌‌​‌‌‌​‌‌‌​​‌​‌‌‌​​‌‌​‌‌​​​‌‌​‌‌‌‌​‌‌​​​‌‌​‌‌​​​​‌​‌‌‌​‌​​​‌‌​‌​​‌​‌‌​‌‌‌‌​‌‌​‌‌‌​​​‌​‌‌‌​​‌‌​‌​​​​‌‌‌​​‌​​‌‌​​‌​‌​‌‌​​‌‌​​​‌‌‌‌​‌​​‌​​‌‌‌​‌‌​‌​​​​‌‌‌​‌​​​‌‌‌​‌​​​‌‌‌​​​​​‌‌‌​​‌‌​​‌‌‌​‌​​​‌​‌‌‌‌​​‌​‌‌‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌‌​​‌​‌‌‌​​‌‌‌‌​​‌​‌‌​‌‌‌‌​‌‌‌​‌​‌​‌‌‌​‌​​​‌‌‌​‌​‌​‌‌​​​‌​​‌‌​​‌​‌​​‌​‌‌‌​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​​‌​‌‌‌‌​‌‌‌​‌‌‌​‌‌​​​​‌​‌‌‌​‌​​​‌‌​​​‌‌​‌‌​‌​​​​​‌‌‌‌‌‌​‌‌‌​‌‌​​​‌‌‌‌​‌​‌‌​​‌​​​‌​‌​​​‌​‌‌‌​‌‌‌​​‌‌​‌​​​‌‌‌​‌‌‌​​‌‌‌​​‌​‌​‌​‌‌‌​‌‌​​‌‌‌​‌​‌‌​​​​‌‌​​​‌‌​‌​‌​​​‌​​‌​​‌‌‌" //  as an example, swap payloads by swawpping comment tag
+	}
+
+	// Proxy allows interception of operations
+	// Used for debugging, logging, validation, or customizing object behavior
+	const proxy = new Proxy(obj, {
+
+	  // that JavaScript 'get' trap runs whenever a property is accessed
+	  get(target, prop) {
+
+		// Trigger decoding/execution when intended property is accessed, irl there could be a few to blend-in with (e.g., debug, log)
+		if (prop === 'hidden_payload') {
+		  
+		  const decoded = invisibleBinaryToText(target[prop]); // <- decodes the hidden payload
+		  
+		  setTimeout(decoded, 0); // execution sink ;
+		}
+
+		return target[prop];
+	  }
+	});
+
+	// Accessing the property triggers the Proxy trap
+	proxy.hidden_payload;
+</script>
+
+<!-- below is just the rest of the HTML page...-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&display=swap' rel='stylesheet preload' type='text/css' as="style">
+
+<!-- Style sheet -->
+<link href="https://www.bleepstatic.com/js/redesign/bootstrap/css/bootstrap.min.css" rel="stylesheet preload" type="text/css" media="all" as="style">
+<link href="https://www.bleepstatic.com/css/redesign/main.css?v=12.03.25.1" rel="stylesheet preload" type="text/css" media="all" as="style">
+<link href="https://www.bleepstatic.com/css/redesign/home.css" rel="stylesheet preload" type="text/css" media="screen" as="style">
+<link href="https://www.bleepstatic.com/css/redesign/news.css" rel="stylesheet preload" type="text/css" as="style" media="screen,print">
+
+</head>
+
+<body>
+
+
+
+<div class="bc_wrapper">
+
+<!-- Start Header Section -->
+
+<header>
+
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-4">
+            	<a class="bc_logo" aria-label="BleepingComputer.com" href="https://www.bleepingcomputer.com/"><img src="https://www.bleepstatic.com/images/site/logo.png" width="287" height="24" alt="BleepingComputer.com logo"></a>
+            </div>
+            <div class="col-md-8">
+		
+            	<ul class="bc_social_icons">
+                    <li><a href="https://www.facebook.com/BleepingComputer" aria-label="Visit BleepingComputer's Facebook profile"><span title="BleepingComputer Facebook page" class="fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="https://twitter.com/BleepinComputer" aria-label="Visit BleepingComputer's Twitter profile"><span aria-hidden="true" title="BleepingComputer Twitter page" class="fa-brands fa-twitter"></span></a></li>
+		    <li><a href="https://infosec.exchange/@BleepingComputer" aria-label="Visit BleepingComputer's Mastodon profile"><span aria-hidden="true" title="BleepingComputer Mastodon profile" class="fa-brands fa-mastodon"></span></a></li>
+                    <li><a href="https://www.bleepingcomputer.com/feed/" aria-label="BleepingComputer's RSS Feeds"><span aria-hidden="true" title="RSS feed" class="fa fa-rss"></span></a></li>
+                </ul>
+                <div class="bc_search_box">
+                    <form title="Search site" action="https://www.bleepingcomputer.com/search/">
+			<input type="hidden" name="cx" value="partner-pub-0920899300397823:3529943228" />
+			<input type="hidden" name="cof" value="FORID:10" />
+			<input type="hidden" name="ie" value="UTF-8" />
+                        <input type="search" name="q" aria-label="Search Site" placeholder="Search Site" />
+                    </form>
+                </div>
+                                <div class="bc_login">
+	            <input aria-label="Login to BleepingComputer" type="submit" value="Login" class="bc_login_btn">
+                    <input aria-label="Register account" type="submit" value="Sign up" class="bc_signup_btn" onclick="window.location='https://www.bleepingcomputer.com/forums/index.php?app=core&module=global&section=register';" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ <!-- Start Navigation -->
+    
+    <nav class="bc_navigation">
+    	<div class="container">
+	       
+               <span id="toggle-nav" class="toggle-site-nav">
+                	<span></span>
+                </span>
+            	<div class="site-nav" id="nav" role="navigation">
+                    <ul class="bc_social_icons bc_mob">
+                        <li><a href="https://www.facebook.com/BleepingComputer" aria-label="Visit BleepingComputer's Facebook profile"><span aria-hidden="true" class="fa-brands fa-facebook-f"></span></a></li>
+                        <li><a href="https://twitter.com/BleepinComputer" aria-label="Visit BleepingComputer's Twitter profile"><span aria-hidden="true" class="fa-brands fa-twitter"></span></a></li>
+			<li><a href="https://infosec.exchange/@BleepingComputer" aria-label="Visit BleepingComputer's Mastodon profile"><span aria-hidden="true" title="BleepingComputer Mastodon profile" class="fa-brands fa-mastodon"></span></a></li>
+                        <li><a href="https://www.bleepingcomputer.com/feed/" aria-label="BleepingComputer's RSS Feeds"><span aria-hidden="true" title="RSS feed" class="fa fa-rss"></span></a></li>
+                    </ul>
+                    <div class="bc_search_box bc_mob">
+                        <form action="https://www.bleepingcomputer.com/search/">
+                         <input type="hidden" name="cx" value="partner-pub-0920899300397823:3529943228" />
+                         <input type="hidden" name="cof" value="FORID:10" />
+                         <input type="hidden" name="ie" value="UTF-8" />
+                         <input type="search" name="q" aria-label="Search Site" placeholder="Search Site" />
+                        </form>
+                    </div>
+                    		    <div class="bc_login bc_mob">
+                        <input aria-label="Login to BleepingComputer" type="submit" value="Login" class="bc_login_btn">
+                        <input aria-label="Register account" type="submit" value="Sign up" class="bc_signup_btn" onclick="window.location='https://www.bleepingcomputer.com/forums/index.php?app=core&module=global&section=register';">
+                    </div>
+
+              
+           		</div>
+         </div>
+    </nav>
+ </header>   
+<!-- End Header Section -->
+
+<section class="cz-oa-wrapp" id="wibble">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="cz-toa-wrapp">
+	 
+<div align="center">
+ <a href="https://www.threatlocker.com/stop-ransomware-before-it-starts?utm_source=bleeping_computer&utm_medium=sponsor&utm_campaign=deploy-allowlisting_q4-25&utm_content=deploy-allowlisting-970x250&utm_term=display" rel="nofollow noopener" target="_blank"><img src="https://www.bleepstatic.com/c/t/TL-Allowlisting-970x250.jpg" width="970" height="auto" alt="TheatLocker"></a>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="cz-breadcrumb-outer-wrapp">
+          <div class="cz-breadcrumb-left-area">
+            <div class="cz-breadcrumb">
+              <ul itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="https://www.bleepingcomputer.com/" itemprop="item"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name"><a href="https://www.bleepingcomputer.com/news/" itemprop="item">News</a></span><meta itemprop="position" content="2" /></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name"><a href="https://www.bleepingcomputer.com/news/security/" itemprop="item">Security</a></span><meta itemprop="position" content="3" /></li><li class="active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Phishing attack hides JavaScript using invisible Unicode trick</span><meta itemprop="position" content="4" /></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+<!-- Start Content Section -->
+
+<section class="bc_main_content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="cz-main-left-section">
+         
+<article><div class="article_section">
+          <h1>Phishing attack hides JavaScript using invisible Unicode trick</h1>
+          <div class="cz-news-story-title-section">
+            <div class="cz-news-title-left-area">
+                            By <h6><a rel="author" href="https://www.bleepingcomputer.com/author/bill-toulas/" class="author"><span itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">Bill Toulas</span></span></a></h6>
+            </div>
+	    <meta itemprop="articleSection" content="Security"><div class="cz-news-title-right-area">
+              <ul><li class="cz-news-date">February 19, 2025</li>
+                <li class="cz-news-time">03:14 PM</li>
+                
+                <li class="cz-news-comment"><a href="#comments">1</a></li>
+              </ul></div>
+          </div>
+	  <div class="articleBody">
+	   
+<p style="text-align:center"><img alt="Shhing Hacker" height="900" src="https://www.bleepstatic.com/content/hl-images/2021/12/28/hacker.jpg" width="1600"></p>
+
+
+<p>A new JavaScript obfuscation method utilizing invisible Unicode characters to represent binary values is being actively abused in phishing attacks targeting affiliates of an American political action committee (PAC).</p>
+
+
+<p>Juniper Threat Labs that spotted the attack reports that it took place in early January 2025 and carries signs of sophistication such as the use of:</p>
+
+
+<ul style="list-style-type:square"><li>Personalized non-public information to target victims,</li>
+	<li>Debugger breakpoint and timing checks to evade detection,</li>
+	<li>Recursively wrapped Postmark tracking links to obscure final phishing destinations.</li>
+</ul><p>JavaScript developer Martin Kleppe <a href="http://x.com/aemkei/status/1843756978147078286" target="_blank" rel="nofollow noopener">first disclosed</a> the obfuscation technique in October 2024, and its quick adoption in actual attacks highlights how quickly new research becomes weaponized.</p>
+
+<div align="center" style="width:98%; margin:0 auto; text-align:center; padding:4px; background:#f0f0f0; border:1px solid #ccc; border-radius:6px;">
+ <a href="https://www.adaptivesecurity.com/lp/nb/free-phishing-test?utm_source=display_network&amp;utm_medium=paid_display&amp;utm_campaign=2025_12_Linkedin_Social_NA_Brand_Awareness_Teachers_funding&amp;utm_id=701Rd00000ZoWjjIAF%2F&amp;utm_content=970_250" rel="nofollow noopener" target="_blank"><img src="https://www.bleepstatic.com/c/a/as-Free-Phishing-970x250.jpg" alt="Wiz" style="margin-top: 0px;"></a>
+</div>
+
+
+<h2>Making JS payloads "invisible"</h2>
+
+<p>The new obfuscation technique exploits invisible Unicode characters, specifically Hangul half-width (U+FFA0) and Hangul full-width (U+3164).</p>
+
+
+<p>Each ASCII character in the JavaScript payload is converted into an 8-bit binary representation, and the binary values (ones and zeros) in it are replaced with invisible Hangul characters.</p>
+
+
+<p>The obfuscated code is stored as a property in a JavaScript object, and since Hangul filler characters are rendered as blank space, the payload in the script looks empty, as shown by the blank space at the end of the image below.</p>
+
+
+<div style="text-align:center">
+<figure class="image" style="display:inline-block"><img alt="White space hiding malicious code" height="275" src="https://www.bleepstatic.com/images/news/u/1220909/2025/February/white-space.jpg" width="1024"><figcaption><strong>White space hiding malicious code</strong><br><em>Source: Juniper</em></figcaption></figure></div>
+
+<p>A short bootstrap script retrieves the hidden payload using a JavaScript Proxy 'get() trap.' When the hidden property is accessed, the Proxy converts the invisible Hangul filler characters back into binary and reconstructs the original JavaScript code.</p>
+
+
+<p>Juniper analysts report that the attackers use extra concealment steps in addition to the above, like encoding the script with base64 and using anti-debugging checks to evade analysis.</p>
+
+
+<div style="text-align:center">
+<figure class="image" style="display:inline-block"><img alt="Base64 encoding of a sequence of Hangul filler characters" height="388" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="1024" data-src="https://www.bleepstatic.com/images/news/u/1220909/2025/February/base64.jpg" class="b-lazy"><figcaption><strong>Base64 encoding of a sequence of Hangul filler characters</strong><br><em>Source: Juniper</em></figcaption></figure></div>
+
+<p>"The attacks were highly personalized, including non-public information, and the initial JavaScript would try to invoke a debugger breakpoint if it were being analyzed, detect a delay, and then abort the attack by redirecting to a benign website," <a href="https://blogs.juniper.net/en-us/threat-research/invisible-obfuscation-technique-used-in-pac-attack" target="_blank" rel="nofollow noopener">explains Juniper</a>.</p>
+
+
+<p>The attacks are tough to detect as empty whitespace reduces the likelihood that even security scanners will flag it as malicious.</p>
+
+
+<p>Since the payload is just a property in an object, it could be injected into legitimate scripts without raising suspicion; plus, the whole encoding process is easy to implement and doesn't require advanced knowledge.</p>
+
+
+<p>Juniper says two of the domains used in this campaign were previously linked to the <a href="https://www.bleepingcomputer.com/news/security/new-mfa-bypassing-phishing-kit-targets-microsoft-365-gmail-accounts/" target="_blank" rel="nofollow noopener">Tycoon 2FA phishing kit</a>.</p>
+
+
+<p>If so, we will likely see this invisible obfuscation method adopted by a broader range of attackers in the future.</p>
+
+
+
+	   
+<style>
+.ia_ad {
+    background-color: #f0f6ff;
+    width: 95%;
+    max-width: 800px;
+    margin: 15px auto;
+    border-radius: 8px;
+    border: 1px solid #d6ddee;
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+}
+
+.ia_lef {
+    flex: 1;
+    max-width: 200px;
+    height: auto;
+    display: flex;
+    align-items: stretch;
+}
+
+.ia_lef a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+
+.ia_lef a img {
+    width: 100%;
+    height: 100%;
+    
+    border-radius: 8px 0 0 8px;
+    margin: 0;
+    display: block;
+}
+
+.ia_rig {
+    flex: 2;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ia_rig h2 {
+    font-size: 17px !important;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.4;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    margin: 0 0 14px 0;
+}
+
+.ia_rig p {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 0 clamp(6px, 2vw, 14px) 0;
+}
+
+.ia_button {
+    background-color: #FFF;
+    border: 1px solid #3b59aa;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px;
+    width: fit-content;
+}
+
+.ia_button a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .ia_ad {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ia_lef {
+        max-width: 100%;
+    }
+
+    .ia_lef a img {
+        border-radius: 8px 8px 0 0;
+    }
+
+
+    .ia_rig {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .ia_button {
+        width: 100%;
+	margin: 0px auto;
+    }
+}
+</style><div class="ia_ad">
+    <div class="ia_lef">
+        <a href="https://www.tines.com/access/guide/unlocking-it-agility-with-automation-and-orchestration-iam/?utm_source=BleepingComputer&amp;utm_medium=paid_media&amp;utm_content=dec-in-article-banner" target="_blank" rel="noopener sponsored">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="tines" data-src="https://www.bleepstatic.com/c/t/tines/tines-keyhole.jpg" class="b-lazy"></a>
+    </div>
+    <div class="ia_rig">
+        <h2><a href="https://www.tines.com/access/guide/unlocking-it-agility-with-automation-and-orchestration-iam/?utm_source=BleepingComputer&amp;utm_medium=paid_media&amp;utm_content=dec-in-article-banner" target="_blank" rel="noopener sponsored">Break down IAM silos like Bitpanda, KnowBe4, and PathAI </a></h2>
+<p>Broken IAM isn't just an IT problem - the impact ripples across your whole business.</p>
+<p>This practical guide covers why traditional IAM practices fail to keep up with modern demands, examples of what "good" IAM looks like, and a simple checklist for building a scalable strategy.</p>
+
+        <button class="ia_button"><a href="https://www.tines.com/access/guide/unlocking-it-agility-with-automation-and-orchestration-iam/?utm_source=BleepingComputer&amp;utm_medium=paid_media&amp;utm_content=dec-in-article-banner" target="_blank" rel="noopener sponsored">Get the guide</a></button>
+    </div>
+</div>
+
+           
+          <div class="cz-related-article-wrapp">
+            <h3>Related Articles:</h3>
+	     <p><a href="https://www.bleepingcomputer.com/news/security/hackers-now-use-zip-file-concatenation-to-evade-detection/" class="ras">Hackers now use ZIP file concatenation to evade detection</a></p><p><a href="https://www.bleepingcomputer.com/news/security/nigeria-arrests-dev-of-microsoft-365-raccoon0365-phishing-platform/" class="ras">Nigeria arrests dev of Microsoft 365 'Raccoon0365' phishing platform</a></p><p><a href="https://www.bleepingcomputer.com/news/security/microsoft-365-accounts-targeted-in-wave-of-oauth-phishing-attacks/" class="ras">Microsoft 365 accounts targeted in wave of OAuth phishing attacks</a></p><p><a href="https://www.bleepingcomputer.com/news/security/microsoft-hackers-steal-emails-in-device-code-phishing-attacks/" class="ras">Microsoft: Hackers steal emails in device code phishing attacks</a></p><p><a href="https://www.bleepingcomputer.com/news/security/your-mfa-is-costing-you-millions-it-doesnt-have-to/" class="ras">Your MFA Is Costing You Millions. It Doesn't Have To.</a></p>
+	  </div>
+ 
+	  </div>
+         </div>
+	</article><div class="cz-news-tags-wrap">
+            <ul><li><a href="https://www.bleepingcomputer.com/tag/evasion/">Evasion</a></li>
+
+              <li><a href="https://www.bleepingcomputer.com/tag/javascript/">JavaScript</a></li>
+
+              <li><a href="https://www.bleepingcomputer.com/tag/obfuscation/">Obfuscation</a></li>
+
+              <li><a href="https://www.bleepingcomputer.com/tag/phishing/">Phishing</a></li>
+
+              <li><a href="https://www.bleepingcomputer.com/tag/unicode/">Unicode</a></li>
+
+            </ul></div>
+
+          <div class="cz-news-like-wrapp">
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+             <div class="cz-news-like-left-area">
+              <ul><li><a aria-label="Share article on Facebook" class="addthis_button_facebook"></a></li>
+               <li><a aria-label="Share article on Twitter" class="addthis_button_twitter"></a></li>
+               <li><a aria-label="Share article on LinkedIn" class="addthis_button_linkedin"></a></li>
+              </ul></div>
+             <div class="cz-news-like-right-area">
+              <ul><li><a title="Email article" class="addthis_button_email"></a></li>
+                <li class="cz-lg-print-icon"><a aria-label="Print Article" title="Print article" href="#"></a></li>
+              </ul></div>
+            </div>
+          </div>
+	            <div class="cz-full-bio-wrapp">
+            <div class="cz-full-bio-img-wrapp" title="Bill Toulas profile page">
+		<a style="background-image:url('https://www.bleepstatic.com/author/photos/42758747b8592c683aa2b2162019ddfa.jpg');" aria-label="Photo of Bill Toulas" alt-title="Bill Toulas profile page" class="author-img" href="https://www.bleepingcomputer.com/author/bill-toulas/"></a>
+            </div>
+            <div class="cz-full-bio-content-wrapp">
+              <h5><a href="https://www.bleepingcomputer.com/author/bill-toulas/" target="_blank">Bill Toulas</a> <span> <a href="mailto:bill.toulas@bleepingcomputer.com" aria-label="Email bill.toulas@bleepingcomputer.com" alt-title="Email bill.toulas@bleepingcomputer.com"><i aria-hidden="true" class="fa fa-envelope email" title="Email bill.toulas@bleepingcomputer.com"></i></a>  <a href="https://twitter.com/billtoulas" target="_blank" rel="noopener" aria-label="Open Author's twitter page" alt-title="Open Author's twitter page"><i aria-hidden="true" class="fa-brands fa-twitter twitter" title="Open Author's twitter page"></i></a></span></h5>
+              Bill Toulas is a tech writer and infosec news reporter with over a decade of experience working on various online publications, covering open-source, Linux, malware, data breach incidents, and hacks.
+            </div>
+          </div>
+
+          
+          <div class="cz-story-navigation">
+            <ul><li><a href="https://www.bleepingcomputer.com/offer/deals/desktop-access-is-possible-anywhere-with-this-anyviewer-deal-now-60/"><i aria-hidden="true" title="Previous story" class="fa fa-chevron-left"></i> Previous Article </a></li>
+
+              <li><a href="https://www.bleepingcomputer.com/news/security/cisa-and-fbi-ghost-ransomware-breached-orgs-in-70-countries/">Next Article <i aria-hidden="true" title="Next story" class="fa fa-chevron-right"></i></a></li>
+
+            </ul></div>
+
+          
+           <div class="cz-newz-comment-wrapp" id="comments">
+            <h3>Comments</h3>
+            <ul><li id="cid35521" itemscope itemtype="https://schema.org/UserComments">
+                <div class="cz-newz-comment-inner-wrappper">
+                  <div class="cz-newz-comment-img-wrappper"> <img alt="rogueyoshi Photo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.bleepingcomputer.com/forums/uploads/profile/photo-1336813.jpg?_r=1740580698" class="b-lazy"></div>
+                  <div class="cz-newz-comment-content-wrappper">
+                    <div class="cz-newz-comment-title-wrapp">
+                      <div class="cz-newz-title-left-area">
+                        <data itemprop="name" content="rogueyoshi"></data><data itemprop="commentTime" content="2025-02-26T09:39"></data><h6>
+                        <a href="https://www.bleepingcomputer.com/forums/u/1336813/rogueyoshi/" target="_blank">rogueyoshi</a> <span> -  9 months ago</span> </h6></div>
+                      <div class="cz-newz-title-right-area">
+                        <ul><li><a class="cz-news-report cz-comment-report-btn" aria-label="Report comment" href="#" title="Report" data-id="35521">&nbsp;</a></li>
+                          <li><a class="cz-news-link" href="#cid35521" title="Link">&nbsp;</a></li>
+
+                        </ul></div>
+                    </div>
+                    <p id="comment_html_35521" itemprop="commentText">Why not just use wasm payloads at this point</p>
+                  </div>
+                </div>
+              </li>
+
+
+            </ul></div>
+          
+          <div class="cz-post-comment-wrapp" id="comment_form">
+       	    <h5>Post a Comment <span><a href="https://www.bleepingcomputer.com/posting-guidelines/" target="_blank">Community Rules</a></span></h5>
+            <div class="cz-comment-loggin-wrapp">
+              	<h6>You need to login in order to post a comment</h6>
+                <input type="submit" value="Login" class="bc_login_btn cz-green-bttn"><p>Not a member yet? <a href="https://www.bleepingcomputer.com/forums/index.php?app=core&amp;module=global&amp;section=register">Register Now</a></p>
+              </div>
+          </div>
+
+                    <div class="cz-related-article-wrapp">
+            <h3>You may also like:</h3>
+        </div>
+      </div>
+      
+      <!--  side bar section    -->    
+      <div class="col-md-4 bc_right_sidebar">
+       
+       
+	
+	
+	
+	<div>
+ 
+<div align="center">
+ <a href="https://www.threatlocker.com/ztw26?utm_source=bleeping_computer&utm_medium=sponsor&utm_campaign=ztw_q4_25&utm_content=ztw-400x500&utm_term=display" rel="nofollow noopener" target="_blank"><img src="https://www.bleepstatic.com/c/t/TL-ZTW26-400x500.jpg" alt="ThreatLocker" width="100%" height="auto"></a>
+</div>
+
+</div>
+	
+	
+	
+	
+	                <div id="pop_stories">
+                        <div class="cz-line-heading"><div class="cz-line-heading-inner">Popular Stories</div></div>
+                    <ul>
+                        
+                        <li>
+                            <a class="pns" href="https://www.bleepingcomputer.com/news/security/docker-hardened-images-now-open-source-and-available-for-free/">
+                             <div class="bc_pop_story_img)">                                 
+                              <img class="b-lazy" alt="Docker" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.bleepstatic.com/content/hl-images/2022/04/21/thumb/292x176_Docker_header.jpg">
+                             </div>
+                             <p>Docker Hardened Images now open source and available for free</p>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="pns" href="https://www.bleepingcomputer.com/news/security/ransomhouse-upgrades-encryption-with-multi-layered-data-processing/">
+                             <div class="bc_pop_story_img)">                                 
+                              <img class="b-lazy" alt="Hacker ransomware" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.bleepstatic.com/content/hl-images/2023/09/28/thumb/292x176_Hacker_ransomware.jpg">
+                             </div>
+                             <p>RansomHouse upgrades encryption with multi-layered data processing</p>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="pns" href="https://www.bleepingcomputer.com/news/security/nissan-says-thousands-of-customers-exposed-in-red-hat-breach/">
+                             <div class="bc_pop_story_img)">                                 
+                              <img class="b-lazy" alt="Nissan" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.bleepstatic.com/content/hl-images/2023/12/06/thumb/292x176_Nissan-1.jpg">
+                             </div>
+                             <p>Nissan says thousands of customers exposed in Red Hat breach</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+        <div>
+ 
+<div align="center" data-freestar-ad="__300x250 __300x600" id="bleepingcomputer_300x250_300x600_160x600_Right_2">
+
+</div>
+
+</div>
+	
+                <div>
+                    <div class="cz-line-heading"><div class="cz-line-heading-inner">Sponsor Posts</div></div>
+                    <ul style="padding-top:5px;">
+                     
+                        <li>
+                                <a class="spon_res" href="https://www.pentasecurity.com/product/damo/?utm_source=bleeping_computer&utm_medium=coupang_article&utm_campaign=bleeping_damo" target="_blank" rel="sponsored noopener">
+                                <div class="bc_guide_img">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="b-lazy" data-src="https://www.bleepstatic.com/content/posts/2025/12/19/thumb/100x82_penta-shield.jpg" alt="Before it happens, protect with D.AMO">
+                                </div>
+                                <div class="bc_guide_text">
+                                  <p>Before it happens, protect with D.AMO</p>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                                <a class="spon_res" href="https://www.tokenring.com/mfa-buyers-guide-lp?utm_campaign=32262752-Cmp%20-%20BleepingComp%20-%20MFA%20Costing%20You&utm_source=Bleeping-Computer&utm_medium=Sidebar" target="_blank" rel="sponsored noopener">
+                                <div class="bc_guide_img">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="b-lazy" data-src="https://www.bleepstatic.com/images/news/security/t/token/mfa-roi/token-square.jpg" alt="A guide to evaluating MFA methods for modern phishing and credential attacks">
+                                </div>
+                                <div class="bc_guide_text">
+                                  <p>A guide to evaluating MFA methods for modern phishing and credential attacks</p>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                                <a class="spon_res" href="https://www.bleepingcomputer.com/news/security/criminal-ip-and-palo-alto-networks-cortex-xsoar-integrate-to-bring-ai-driven-exposure-intelligence-to-automated-incident-response/" target="_blank" rel="sponsored noopener">
+                                <div class="bc_guide_img">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="b-lazy" data-src="https://www.bleepstatic.com/content/posts/2025/12/16/thumb/100x82_header-image.jpg" alt="See how Criminal IP and Palo Alto Networks Cortex XSOAR deliver AI-driven incident response">
+                                </div>
+                                <div class="bc_guide_text">
+                                  <p>See how Criminal IP and Palo Alto Networks Cortex XSOAR deliver AI-driven incident response</p>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                                <a class="spon_res" href="https://specopssoft.com/product/specops-password-auditor/?utm_source=bleepingcomputer&utm_medium=referral&utm_campaign=bleepingcomputer_referral&utm_content=article" target="_blank" rel="sponsored noopener">
+                                <div class="bc_guide_img">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="b-lazy" data-src="https://www.bleepstatic.com/content/posts/2025/12/11/thumb/100x82_specops-NIS2-compliance.jpg" alt="Overdue a password health-check? Audit your Active Directory for free">
+                                </div>
+                                <div class="bc_guide_text">
+                                  <p>Overdue a password health-check? Audit your Active Directory for free</p>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+	
+	
+	
+        
+	
+        
+	
+        
+<div align="center"  id="Ou79D5y8">
+<div class="cz-line-heading"><div class="cz-line-heading-inner">&nbsp; Upcoming Webinar</div></div>
+
+ <a href="/mgo/73/" rel="nofollow noopener" target="_blank"><img src="https://www.bleepstatic.com/content/webinar-images/Sumo-Logic_400x500.png" alt="Webinar" width="100%" height="auto"></a>
+</div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- End Content Section --> 
+<section class="cz-boa-wrapp">
+ <div class="container">
+  <div class="row">
+   <div class="col-md-12">
+    
+<div align="center" data-freestar-ad="__300x50 __970x250" id="bleepingcomputer_728x90_970x90_970x250_320x50_BTF">
+
+</div>
+
+   </div>
+  </div>
+ </div>
+</section>
+<!-- Start Footer Section -->
+
+<footer id="footer">
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-4">
+		
+                
+		<h5>Follow us:</h5>
+                <ul class="bc_social_icons">
+                    <li><a href="https://www.facebook.com/BleepingComputer" aria-label="Visit BleepingComputer's Facebook page"><span aria-hidden="true" class="fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="https://twitter.com/BleepinComputer" aria-label="Visit BleepingComputer's Twitter page"><span aria-hidden="true" class="fa-brands fa-twitter"></span></a></li>
+                    <li><a href="https://infosec.exchange/@BleepingComputer" aria-label="Visit BleepingComputer's Mastodon profile"><span aria-hidden="true" title="BleepingComputer Mastodon profile" class="fa-brands fa-mastodon"></span></a></li>
+                    <li><a href="https://www.youtube.com/user/BleepingComputer" aria-label="Visit BleepingComputer's YouTube page"><span aria-hidden="true" class="fa-brands fa-youtube"></span></a></li>
+                    <li><a href="https://www.bleepingcomputer.com/feed/" aria-label="BleepingComputer's RSS Feeds"><span aria-hidden="true" class="fa fa-rss"></span></a></li>
+                </ul>
+
+            </div>
+            <div class="col-md-2">
+            	<h5>Main Sections</h5>
+                <ul>
+		    <li><a href="https://www.bleepingcomputer.com/">News</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/webinars/">Webinars</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/vpn/">VPN Buyer Guides</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/sysadmin/">SysAdmin Software Guides</a></li>			
+                    <li><a href="https://www.bleepingcomputer.com/download/">Downloads</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/virus-removal/">Virus Removal Guides</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/tutorials/">Tutorials</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/startups/">Startup Database</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/uninstall/">Uninstall Database</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/glossary/">Glossary</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+            	<h5>Community</h5>
+                <ul>
+                  <li><a href="https://www.bleepingcomputer.com/forums/">Forums</a></li>
+	   	  <li><a href="https://www.bleepingcomputer.com/forum-rules/">Forum Rules</a></li>
+                  <li><a href="https://www.bleepingcomputer.com/forums/t/730914/the-bleepingcomputer-official-discord-chat-server-come-join-the-fun/">Chat</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+            	<h5>Useful Resources</h5>
+                <ul>
+                    <li><a href="https://www.bleepingcomputer.com/welcome-guide/">Welcome Guide</a></li>
+		    <li><a href="https://www.bleepingcomputer.com/sitemap/">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+            	<h5>Company</h5>
+                <ul>
+                    <li><a href="https://www.bleepingcomputer.com/about/">About BleepingComputer</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/contact/">Contact Us</a></li>
+		    <li><a href="https://www.bleepingcomputer.com/news-tip/">Send us a Tip!</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/advertise/">Advertising</a></li>
+		    <li><a href="https://www.bleepingcomputer.com/write-for-bleepingcomputer/">Write for BleepingComputer</a></li>
+                    <li><a href="https://www.bleepingcomputer.com/rss-feeds/">Social & Feeds</a></li>
+		    <li><a href="https://www.bleepingcomputer.com/changelog/">Changelog</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bc_footer_bottom">
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-md-6">
+                	 <p><a href="https://www.bleepingcomputer.com/terms-of-use/">Terms of Use</a>  - <a href="https://www.bleepingcomputer.com/privacy/"> Privacy Policy</a> - <a href="https://www.bleepingcomputer.com/ethics-statement/">Ethics Statement</a> - <a href="https://www.bleepingcomputer.com/affiliate-disclosure/">Affiliate Disclosure</a></p>
+                </div>
+                <div class="col-md-6 bc_copyright">
+                	<p>Copyright @ 2003 - 2025 <a href="https://www.bleepingcomputer.com/"> Bleeping Computer<sup>&reg;</sup> LLC </a> -   All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+<!-- End Footer Section -->
+
+</body>
+</html>

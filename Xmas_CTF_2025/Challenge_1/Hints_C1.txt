@@ -1,0 +1,23 @@
+When I open challenge #1, I just see a bunch of text like this:
+
+MDEwMDEwMDAgMDExMDEwMDEgMDAxMDAwMDE=
+
+what is all this stuff?
+
+
+hint 1.
+Open CyberChef, click the html file inside the CyberChef_v9.37.3
+
+
+hint 2.
+open challenge 1 ("./Challenge_C1.txt") look at the "ingredients" you're given.
+
+
+hint 3.
+put all your ingredients in CyberChef, cook-up a delicious recipe.
+>> in operations search "from " and many options will be given.
+>> if you don't know much about your ingredients, take a sample to an AI and ask it "What is this?"
+
+
+hint 4.
+This delicious recipe takes more than one step to cook!

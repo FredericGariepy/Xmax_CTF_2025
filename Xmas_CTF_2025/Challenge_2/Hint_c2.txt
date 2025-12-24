@@ -1,0 +1,28 @@
+The image won't open in a viewer.
+It has 54 bytes, something is on that file.
+Hey, where is part two?
+
+
+PART one of two
+
+hint 1.
+The file is an image, the flag is not.
+
+hint 2.
+use the terminal.
+
+hint 3.
+meow.
+
+
+
+PART two of two
+
+hint 1.
+It's in this folder.
+
+hint 2.
+use the terminal.
+
+hint 3.
+the file is hidden.
